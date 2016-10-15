@@ -28,6 +28,7 @@ angular.module(MODULE_NAME, [])
       let useDocumentBottom = false;
       let unregisterEventListener = null;
       let checkInterval = false;
+      let prevRemaining = NaN;
 
       function height(element) {
         const el = element[0] || element;
@@ -80,7 +81,10 @@ angular.module(MODULE_NAME, [])
         }
 
         const remaining = elementBottom - containerBottom;
-        const shouldScroll = remaining <= (height(container) * scrollDistance) + 1;
+        let shouldScroll = remaining <= (height(container) * scrollDistance) + 1;
+
+        shouldScroll = shouldScroll && prevRemaining !== remaining;
+        prevRemaining = remaining;
 
         if (shouldScroll) {
           checkWhenEnabled = true;
